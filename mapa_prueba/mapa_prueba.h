@@ -7,7 +7,7 @@ extern "C" {
 
     void init();
     void display();
-    void keyboard(char, int, int);
+    void keyboard(unsigned char, int, int);
 
 
 #ifdef __cplusplus
