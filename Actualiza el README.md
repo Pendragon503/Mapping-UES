@@ -78,6 +78,7 @@ Este proyecto es una evaluación final para la materia de Algoritmos Gráficos y
 
 - [@Pendragon503](https://github.com/Pendragon503)
 - [@EdMendez00](https://github.com/EdMendez00)
+- [@Chepitos98](https://github.com/Chepitos98)
 
 
 ## Licencia
