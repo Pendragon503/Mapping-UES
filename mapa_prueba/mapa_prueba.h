@@ -8,6 +8,7 @@ extern "C" {
     void init();
     void display();
     void keyboard(unsigned char, int, int);
+    void drawCube(float, float, float, float);
 
 
 #ifdef __cplusplus
