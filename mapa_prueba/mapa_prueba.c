@@ -1173,7 +1173,7 @@ void dibujarArbol(float posX, float posY, float posZ) {
     float crownRadius = 15.0f;
 
     // Colores
-    GLfloat trunkColor[] = {0.55f, 0.27f, 0.07f}; // Marrón
+    GLfloat trunkColor[] = {0.95f, 0.27f, 0.07f}; // Marrón
     GLfloat crownColor[] = {0.0f, 1.0f, 0.0f}; // Verde
 
     glPushMatrix();
@@ -1254,6 +1254,12 @@ void display() {
     //Hacia el bunker
     BresenhamLinea(-125, 400, 150, 400);
     BresenhamLinea(-125, 300, 50, 300);
+    
+    BresenhamLinea(150, 0, 200, 50);
+    BresenhamLinea(50, 0, 0, 50);
+    
+    BresenhamLinea(200, 150, 150, 200);
+    BresenhamLinea(0, 150, 50, 200);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -1266,6 +1272,8 @@ void display() {
     Arriate();
     dibujarArbol(-150, -100, 0);
     dibujarArbol(-175, -150, 50);
+    dibujarArbol(350, -50, 50);
+    dibujarArbol(100, 80, 50);
     //    dibujarArbol(-225, -150, 50);
     //    dibujarArbol(-225, -125, 50);
     glTranslatef(325, -290, -2.5);
