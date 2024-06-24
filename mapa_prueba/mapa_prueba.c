@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "./mapa_prueba.h"
 
-
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 #define VIEWPORT_WIDTH 600
@@ -16,14 +15,10 @@ int buildingPositions[6][2] = {
     {0, -140},
     //Aulas N
     {0, -25},
-    //Usos multiples
-    {350, 100},
     //Academica
     {-350, 100},
     //Medicina
-    {350, 350},
-    //Bunker
-    {-200, 350}
+    {350, 350}
 };
 int buildingSize = 50;
 
@@ -192,6 +187,314 @@ void circunferencia(int xcentro, int ycentro, int radio) {
     }
 }
 
+void bunker() {
+    float startX1 = -200;
+    float startY1 = 350;
+    float startX2 = -265; // Segunda posición en X para el segundo edificio
+    float startY2 = 350;
+
+    // Dimensiones del edificio
+    float buildingWidth = 75;
+
+    float buildingHeight = 100; // Altura del edificio
+    float buildingDepth = 50;
+
+    // Color del edificio
+    GLfloat buildingColor[] = {0.82f, 0.41f, 0.12f}; // Ocre
+
+    // Color de las ventanas
+    GLfloat windowColor[] = {0.0f, 0.0f, 0.55f}; // Azul oscuro
+
+    glPushMatrix();
+
+    // Aplicar rotación para que el edificio esté en diagonal
+    glTranslatef(startX1, startY1, 0);
+    glRotatef(45, 0, 1, 0);
+    glTranslatef(-startX1, -startY1, 0);
+
+    // Dibujar el primer edificio (rectángulo)
+    glColor3fv(buildingColor);
+    glBegin(GL_QUADS);
+
+    // Front face
+    glVertex3f(startX1 - buildingWidth / 2, startY1 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 + buildingHeight / 2, buildingDepth / 2);
+
+    // Back face
+    glVertex3f(startX1 - buildingWidth / 2, startY1 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 + buildingHeight / 2, -buildingDepth / 2);
+
+    // Left face
+    glVertex3f(startX1 - buildingWidth / 2, startY1 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 + buildingHeight / 2, -buildingDepth / 2);
+
+    // Right face
+    glVertex3f(startX1 + buildingWidth / 2, startY1 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 + buildingHeight / 2, -buildingDepth / 2);
+
+    // Top face
+    glVertex3f(startX1 - buildingWidth / 2, startY1 + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 + buildingHeight / 2, buildingDepth / 2);
+
+    // Bottom face
+    glVertex3f(startX1 - buildingWidth / 2, startY1 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX1 + buildingWidth / 2, startY1 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX1 - buildingWidth / 2, startY1 - buildingHeight / 2, buildingDepth / 2);
+
+    glEnd();
+
+    // Dibujar las ventanas (3 ventanas en cada lado)
+    float windowWidth = buildingWidth / 2.5f;
+    float windowHeight = buildingHeight / 8;
+    float windowDepth = 1.0f;
+
+    glColor3fv(windowColor);
+
+    for (int i = 0; i < 3; i++) {
+        // Ventanas del lado izquierdo
+        glBegin(GL_QUADS);
+        glVertex3f(startX1 - buildingWidth / 2 - windowDepth, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 4);
+        glVertex3f(startX1 - buildingWidth / 2 - windowDepth, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX1 - buildingWidth / 2 - windowDepth, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX1 - buildingWidth / 2 - windowDepth, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 4);
+        glEnd();
+
+        // Ventanas del lado derecho
+        glBegin(GL_QUADS);
+        glVertex3f(startX1 + buildingWidth / 2 + windowDepth, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 4);
+        glVertex3f(startX1 + buildingWidth / 2 + windowDepth, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX1 + buildingWidth / 2 + windowDepth, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX1 + buildingWidth / 2 + windowDepth, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 4);
+        glEnd();
+
+        // Ventanas de la cara frontal
+        glBegin(GL_QUADS);
+        glVertex3f(startX1 - buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glVertex3f(startX1 + buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glVertex3f(startX1 + buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glVertex3f(startX1 - buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glEnd();
+
+        // Ventanas de la cara trasera
+        glBegin(GL_QUADS);
+        glVertex3f(startX1 - buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glVertex3f(startX1 + buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glVertex3f(startX1 + buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glVertex3f(startX1 - buildingWidth / 4, startY1 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glEnd();
+    }
+
+    glPopMatrix();
+
+    glPushMatrix();
+
+    // Aplicar rotación para que el edificio esté en diagonal
+    glTranslatef(startX2, startY2, 0);
+    glRotatef(45, 0, 1, 0);
+    glTranslatef(-startX2, -startY2, 0);
+
+    // Dibujar el segundo edificio (rectángulo)
+    glColor3fv(buildingColor);
+    glBegin(GL_QUADS);
+
+    // Front face
+    glVertex3f(startX2 - buildingWidth / 2, startY2 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 + buildingHeight / 2, buildingDepth / 2);
+
+    // Back face
+    glVertex3f(startX2 - buildingWidth / 2, startY2 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 + buildingHeight / 2, -buildingDepth / 2);
+
+    // Left face
+    glVertex3f(startX2 - buildingWidth / 2, startY2 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 + buildingHeight / 2, -buildingDepth / 2);
+
+    // Right face
+    glVertex3f(startX2 + buildingWidth / 2, startY2 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 + buildingHeight / 2, -buildingDepth / 2);
+
+    // Top face
+    glVertex3f(startX2 - buildingWidth / 2, startY2 + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 + buildingHeight / 2, buildingDepth / 2);
+
+    // Bottom face
+    glVertex3f(startX2 - buildingWidth / 2, startY2 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX2 + buildingWidth / 2, startY2 - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX2 - buildingWidth / 2, startY2 - buildingHeight / 2, buildingDepth / 2);
+
+    glEnd();
+
+    // Dibujar las ventanas (3 ventanas en cada lado)
+    glColor3fv(windowColor);
+
+    for (int i = 0; i < 3; i++) {
+        // Ventanas del lado izquierdo
+        glBegin(GL_QUADS);
+        glVertex3f(startX2 - buildingWidth / 2 - windowDepth, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 4);
+        glVertex3f(startX2 - buildingWidth / 2 - windowDepth, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX2 - buildingWidth / 2 - windowDepth, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX2 - buildingWidth / 2 - windowDepth, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 4);
+        glEnd();
+
+        // Ventanas del lado derecho
+        glBegin(GL_QUADS);
+        glVertex3f(startX2 + buildingWidth / 2 + windowDepth, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 4);
+        glVertex3f(startX2 + buildingWidth / 2 + windowDepth, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX2 + buildingWidth / 2 + windowDepth, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 4);
+        glVertex3f(startX2 + buildingWidth / 2 + windowDepth, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 4);
+        glEnd();
+
+        // Ventanas de la cara frontal
+        glBegin(GL_QUADS);
+        glVertex3f(startX2 - buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glVertex3f(startX2 + buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glVertex3f(startX2 + buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glVertex3f(startX2 - buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 + windowDepth);
+        glEnd();
+
+        // Ventanas de la cara trasera
+        glBegin(GL_QUADS);
+        glVertex3f(startX2 - buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glVertex3f(startX2 + buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glVertex3f(startX2 + buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glVertex3f(startX2 - buildingWidth / 4, startY2 + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 - windowDepth);
+        glEnd();
+    }
+
+    glPopMatrix();
+}
+
+// Método independiente para dibujar el edificio
+void usosMultiples() {
+    float startX = 350;
+    float startY = 100;
+
+    // Dimensiones del edificio
+    float buildingWidth = 100;
+    float buildingHeight = 75; // Aumentar la altura del edificio
+    float buildingDepth = 150;
+
+    // Color del edificio
+    GLfloat buildingColor[] = {0.53f, 0.81f, 0.98f}; // Celeste
+
+    // Color de las ventanas
+    GLfloat windowColor[] = {0.0f, 0.0f, 0.55f}; // Azul oscuro
+
+    glPushMatrix();
+
+    // Dibujar el edificio principal
+    glColor3fv(buildingColor);
+    glBegin(GL_QUADS);
+
+    // Front face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+
+    // Back face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+
+    // Left face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+
+    // Right face
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+
+    // Top face
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+
+    // Bottom face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+
+    glEnd();
+
+    // Dibujar las ventanas (6 ventanas)
+    float windowWidth = buildingWidth / 2.5f;
+    float windowHeight = buildingHeight / 8;
+    float windowDepth = 1.0f;
+
+    glColor3fv(windowColor);
+
+    // Ventanas del lado izquierdo y derecho
+    for (int i = 0; i < 3; i++) {
+        // Izquierda
+        glBegin(GL_QUADS);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glEnd();
+
+        // Derecha
+        glBegin(GL_QUADS);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glEnd();
+    }
+
+    // Dibujar barras horizontales arriba de las ventanas
+    float barHeight = windowHeight / 4;
+    for (int i = 0; i < 3; i++) {
+        // Izquierda
+        glBegin(GL_QUADS);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, -buildingDepth / 2 + 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, buildingDepth / 2 - 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glEnd();
+
+        // Derecha
+        glBegin(GL_QUADS);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, -buildingDepth / 2 + 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, buildingDepth / 2 - 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glEnd();
+    }
+    
+    glPopMatrix();
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -261,6 +564,9 @@ void display() {
     BresenhamLinea(-125, 300, 50, 300);
 
     glEnable(GL_DEPTH_TEST);
+    
+    bunker();
+    usosMultiples();
 
     glFlush();
     glutSwapBuffers();
