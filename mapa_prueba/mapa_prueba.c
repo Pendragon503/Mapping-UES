@@ -8,7 +8,7 @@
 #define VIEWPORT_HEIGHT 600
 
 int character_x = 100; // Posición inicial del personaje
-int character_y = -400; // Posición inicial del personaje
+int character_y = 100; // Posición inicial del personaje
 
 int buildingPositions[6][2] = {
     //Juridicas
@@ -26,7 +26,7 @@ int buildingSize = 50;
 int fillBuildings[6] = {0, 0, 0, 0, 0, 0};
 
 void init() {
-    glClearColor(1.0, 0.0, 1.0, 0.0); // Cambiar el color de fondo a verde
+    glClearColor(0.7, 0.6, 0.5, 1.0); // Cambiar el color de fondo a verde
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // en el init se agregan estas dos lineas
@@ -85,7 +85,7 @@ void drawCube(float x, float y, float z, float size) {
 }
 
 void drawGround() {
-    glColor3f(0.0, 1.0, 0.0); // Gris oscuro para el suelo
+    glColor3f(0.6f, 0.3f, 0.1f); // Cafe para el suelo
     glBegin(GL_QUADS);
     glVertex3f(-500, -500, 0);
     glVertex3f(500, -500, 0);
@@ -164,7 +164,7 @@ void Bresenham3D(float x0, float y0, float z0, float x1, float y1, float z1) {
     int y = y0;
     int z = z0;
 
-    if (dx >= dy && dx >= dz) {        // Driving axis is X-axis
+    if (dx >= dy && dx >= dz) { // Driving axis is X-axis
         int p1 = 2 * dy - dx;
         int p2 = 2 * dz - dx;
         while (x != x1) {
@@ -202,7 +202,7 @@ void Bresenham3D(float x0, float y0, float z0, float x1, float y1, float z1) {
             glVertex3f(x, y, z);
             glEnd();
         }
-    } else {                           // Driving axis is Z-axis
+    } else { // Driving axis is Z-axis
         int p1 = 2 * dy - dz;
         int p2 = 2 * dx - dz;
         while (z != z1) {
@@ -264,7 +264,6 @@ void drawWindowsPoints(float startX, float startY, float startZ, float buildingS
 
     glEnd();
 }
-
 
 void drawCube2(float x, float y, float z, float size) {
     float halfSize = size / 2.0f;
@@ -531,6 +530,7 @@ void bunker() {
 }
 
 // Método independiente para dibujar el edificio
+
 void usosMultiples() {
     float startX = 350;
     float startY = 100;
@@ -635,7 +635,564 @@ void usosMultiples() {
         glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
         glEnd();
     }
-    
+
+    glPopMatrix();
+}
+
+// Método independiente para dibujar el edificio
+
+void academica(float buildingWidth, float buildingHeight, float buildingDepth) {
+    float startX = -350;
+    float startY = 100;
+
+    // Dimensiones del edificio
+    //    float buildingWidth = 100;
+    //    float buildingHeight = 150; // Aumentar la altura del edificio
+    //    float buildingDepth = 50;
+
+    // Color del edificio
+    GLfloat buildingColor[] = {0.7f, 0.0f, 0.0f}; // Celeste
+
+    // Color de las ventanas
+    GLfloat windowColor[] = {0.0f, 0.0f, 0.55f}; // Azul oscuro
+
+    glPushMatrix();
+
+    // Dibujar el edificio principal
+    glColor3fv(buildingColor);
+    glBegin(GL_QUADS);
+
+    // Front face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+
+    // Back face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+
+    // Left face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+
+    // Right face
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+
+    // Top face
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY + buildingHeight / 2, buildingDepth / 2);
+
+    // Bottom face
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, -buildingDepth / 2);
+    glVertex3f(startX + buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+    glVertex3f(startX - buildingWidth / 2, startY - buildingHeight / 2, buildingDepth / 2);
+
+    glEnd();
+
+    // Dibujar las ventanas (6 ventanas)
+    float windowWidth = buildingWidth / 2.5f;
+    float windowHeight = buildingHeight / 8;
+    float windowDepth = 1.0f;
+
+    glColor3fv(windowColor);
+
+    // Ventanas del lado izquierdo y derecho
+    for (int i = 0; i < 3; i++) {
+        // Izquierda
+        glBegin(GL_QUADS);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glEnd();
+
+        // Derecha
+        glBegin(GL_QUADS);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) - windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glEnd();
+    }
+
+    // Dibujar barras horizontales arriba de las ventanas
+    float barHeight = windowHeight / 4;
+    for (int i = 0; i < 3; i++) {
+        // Izquierda
+        glBegin(GL_QUADS);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, -buildingDepth / 2 + 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, buildingDepth / 2 - 10);
+        glVertex3f(startX - buildingWidth / 2 - windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glEnd();
+
+        // Derecha
+        glBegin(GL_QUADS);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, -buildingDepth / 2 + 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, -buildingDepth / 2 + 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2 + barHeight, buildingDepth / 2 - 10);
+        glVertex3f(startX + buildingWidth / 2 + windowDepth, startY + (i - 1) * (buildingHeight / 3) + windowHeight / 2, buildingDepth / 2 - 10);
+        glEnd();
+    }
+
+    glPopMatrix();
+}
+
+void dibujarMedicinaUno() {
+    float startX = 340;
+    float startY = 350;
+    float startZ = 0; // Mantener la posición en Y
+
+    // Dimensiones del edificio
+    float buildingWidth = 100;
+    float buildingHeight = 150;
+    float buildingDepth = 100;
+
+    // Colores
+    GLfloat sideColor[] = {1.0f, 0.0f, 0.0f}; // Rojo
+    GLfloat topColor[] = {0.0f, 0.5f, 1.0f}; // Azul
+    GLfloat windowColor[] = {0.0f, 0.0f, 0.55f}; // Azul oscuro
+
+    glPushMatrix();
+
+    // Aplicar rotación para que el edificio esté en diagonal
+    glTranslatef(startX, startY, startZ);
+    glRotatef(90, 1, 0, 0); // Rotación a 90 grados
+    glTranslatef(-startX, -startY, -startZ);
+
+    // Dibujar los lados del edificio con GL_POINTS
+    glColor3fv(sideColor);
+
+    // Lado izquierdo
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= -buildingWidth / 2 + 1; ++x) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado derecho
+    glBegin(GL_POINTS);
+    for (int x = buildingWidth / 2 - 1; x <= buildingWidth / 2; ++x) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado frontal
+    glBegin(GL_POINTS);
+    for (int z = -buildingDepth / 2; z <= -buildingDepth / 2 + 1; ++z) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado trasero
+    glBegin(GL_POINTS);
+    for (int z = buildingDepth / 2 - 1; z <= buildingDepth / 2; ++z) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Dibujar la parte superior del edificio con GL_POINTS
+    glColor3fv(topColor);
+
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+        for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+            glVertex3f(startX + x, startY + buildingHeight / 2, startZ + z);
+        }
+    }
+    glEnd();
+
+    // Dibujar ventanas en los lados rojos
+    glColor3fv(windowColor);
+
+    // Ventanas en el lado izquierdo
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= -buildingWidth / 2 + 1; ++x) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int z = -buildingDepth / 4; z <= buildingDepth / 4; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Ventanas en el lado derecho
+    glBegin(GL_POINTS);
+    for (int x = buildingWidth / 2 - 1; x <= buildingWidth / 2; ++x) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int z = -buildingDepth / 4; z <= buildingDepth / 4; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Ventanas en el lado frontal
+    glBegin(GL_POINTS);
+    for (int z = -buildingDepth / 2; z <= -buildingDepth / 2 + 1; ++z) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int x = -buildingWidth / 4; x <= buildingWidth / 4; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Ventanas en el lado trasero
+    glBegin(GL_POINTS);
+    for (int z = buildingDepth / 2 - 1; z <= buildingDepth / 2; ++z) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int x = -buildingWidth / 4; x <= buildingWidth / 4; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    glPopMatrix();
+}
+
+void dibujarMedicinaDos() {
+    float startX = 425;
+    float startY = 300;
+    float startZ = 0; // Mantener la posición en Y
+
+    // Dimensiones del edificio
+    float buildingWidth = 75;
+    float buildingHeight = 150;
+    float buildingDepth = 200;
+
+    // Colores
+    GLfloat sideColor[] = {1.0f, 0.0f, 0.0f}; // Rojo
+    GLfloat topColor[] = {0.0f, 0.5f, 1.0f}; // Azul
+    GLfloat windowColor[] = {0.0f, 0.0f, 0.55f}; // Azul oscuro
+
+    glPushMatrix();
+
+    // Aplicar rotación para que el edificio esté en diagonal
+    glTranslatef(startX, startY, startZ);
+    glRotatef(90, 1, 0, 0); // Rotación a 90 grados
+    glTranslatef(-startX, -startY, -startZ);
+
+    // Dibujar los lados del edificio con GL_POINTS
+    glColor3fv(sideColor);
+
+    // Lado izquierdo
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= -buildingWidth / 2 + 1; ++x) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado derecho
+    glBegin(GL_POINTS);
+    for (int x = buildingWidth / 2 - 1; x <= buildingWidth / 2; ++x) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado frontal
+    glBegin(GL_POINTS);
+    for (int z = -buildingDepth / 2; z <= -buildingDepth / 2 + 1; ++z) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado trasero
+    glBegin(GL_POINTS);
+    for (int z = buildingDepth / 2 - 1; z <= buildingDepth / 2; ++z) {
+        for (int y = -buildingHeight / 2; y <= buildingHeight / 2; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Dibujar la parte superior del edificio con GL_POINTS
+    glColor3fv(topColor);
+
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+        for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+            glVertex3f(startX + x, startY + buildingHeight / 2, startZ + z);
+        }
+    }
+    glEnd();
+
+    // Dibujar ventanas en los lados rojos
+    glColor3fv(windowColor);
+
+    // Ventanas en el lado izquierdo
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= -buildingWidth / 2 + 1; ++x) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int z = -buildingDepth / 4; z <= buildingDepth / 4; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Ventanas en el lado derecho
+    glBegin(GL_POINTS);
+    for (int x = buildingWidth / 2 - 1; x <= buildingWidth / 2; ++x) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int z = -buildingDepth / 4; z <= buildingDepth / 4; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Ventanas en el lado frontal
+    glBegin(GL_POINTS);
+    for (int z = -buildingDepth / 2; z <= -buildingDepth / 2 + 1; ++z) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int x = -buildingWidth / 4; x <= buildingWidth / 4; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Ventanas en el lado trasero
+    glBegin(GL_POINTS);
+    for (int z = buildingDepth / 2 - 1; z <= buildingDepth / 2; ++z) {
+        for (int y = -buildingHeight / 2 + 10; y <= buildingHeight / 2 - 10; y += 30) {
+            for (int x = -buildingWidth / 4; x <= buildingWidth / 4; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    glPopMatrix();
+}
+
+void AulasN() {
+    float startX = -50;
+    float startY = -25;
+    float startZ = 0; // Mantener la posición en Y
+
+    // Dimensiones del edificio
+    float buildingWidth = 75;
+    float buildingHeight = 50;
+    float buildingDepth = 100;
+
+    // Colores
+    GLfloat wallColor[] = {0.0f, 0.5f, 1.0f}; // Azul
+    GLfloat roofColor[] = {1.0f, 0.0f, 0.0f}; // Rojo
+
+    glPushMatrix();
+
+    // Aplicar rotación para que el edificio esté en diagonal
+    glTranslatef(startX, startY, startZ);
+    glRotatef(90, 1, 0, 0); // Rotación a 90 grados
+    glTranslatef(-startX, -startY, -startZ);
+
+    // Dibujar las paredes del edificio con GL_POINTS
+    glColor3fv(wallColor);
+
+    // Lado izquierdo
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= -buildingWidth / 2 + 1; ++x) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado derecho
+    glBegin(GL_POINTS);
+    for (int x = buildingWidth / 2 - 1; x <= buildingWidth / 2; ++x) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado frontal
+    glBegin(GL_POINTS);
+    for (int z = -buildingDepth / 2; z <= -buildingDepth / 2 + 1; ++z) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado trasero
+    glBegin(GL_POINTS);
+    for (int z = buildingDepth / 2 - 1; z <= buildingDepth / 2; ++z) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Dibujar el techo del edificio con GL_POINTS
+    glColor3fv(roofColor);
+
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+        for (int y = 0; y <= buildingHeight / 2; ++y) {
+            int zMin = -(buildingDepth / 2) * (buildingHeight / 2 - y) / (buildingHeight / 2);
+            int zMax = (buildingDepth / 2) * (buildingHeight / 2 - y) / (buildingHeight / 2);
+            for (int z = zMin; z <= zMax; ++z) {
+                glVertex3f(startX + x, startY + buildingHeight + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    glPopMatrix();
+}
+
+void Arriate() {
+    float startX = 15;
+    float startY = -25;
+    float startZ = 0; // Mantener la posición en Y
+
+    // Dimensiones del edificio
+    float buildingWidth = 20;
+    float buildingHeight = 20;
+    float buildingDepth = 100;
+
+    // Colores
+    GLfloat wallColor[] = {0.0f, 0.5f, 1.0f}; // Azul
+    GLfloat roofColor[] = {1.0f, 0.0f, 0.0f}; // Rojo
+
+    glPushMatrix();
+
+    // Aplicar rotación para que el edificio esté en diagonal
+    glTranslatef(startX, startY, startZ);
+    glRotatef(90, 1, 0, 0); // Rotación a 90 grados
+    glTranslatef(-startX, -startY, -startZ);
+
+    // Dibujar las paredes del edificio con GL_POINTS
+    glColor3fv(wallColor);
+
+    // Lado izquierdo
+    glBegin(GL_POINTS);
+    for (int x = -buildingWidth / 2; x <= -buildingWidth / 2 + 1; ++x) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado derecho
+    glBegin(GL_POINTS);
+    for (int x = buildingWidth / 2 - 1; x <= buildingWidth / 2; ++x) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int z = -buildingDepth / 2; z <= buildingDepth / 2; ++z) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado frontal
+    glBegin(GL_POINTS);
+    for (int z = -buildingDepth / 2; z <= -buildingDepth / 2 + 1; ++z) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    // Lado trasero
+    glBegin(GL_POINTS);
+    for (int z = buildingDepth / 2 - 1; z <= buildingDepth / 2; ++z) {
+        for (int y = 0; y <= buildingHeight; ++y) {
+            for (int x = -buildingWidth / 2; x <= buildingWidth / 2; ++x) {
+                glVertex3f(startX + x, startY + y, startZ + z);
+            }
+        }
+    }
+    glEnd();
+
+    glPopMatrix();
+}
+
+void dibujarArbol(float posX, float posY, float posZ) {
+    // Dimensiones del árbol
+    float trunkHeight = 50.0f;
+    float trunkRadius = 5.0f;
+    float crownRadius = 15.0f;
+
+    // Colores
+    GLfloat trunkColor[] = {0.55f, 0.27f, 0.07f}; // Marrón
+    GLfloat crownColor[] = {0.0f, 1.0f, 0.0f}; // Verde
+
+    glPushMatrix();
+
+    // Posicionar el árbol
+    glTranslatef(posX, posY, posZ);
+
+    // Dibujar el tronco del árbol
+    glColor3fv(trunkColor);
+    GLUquadric* quad = gluNewQuadric();
+    gluQuadricDrawStyle(quad, GLU_FILL);
+    gluCylinder(quad, trunkRadius, trunkRadius, trunkHeight, 32, 32);
+
+    // Dibujar la copa del árbol
+    glColor3fv(crownColor);
+    glTranslatef(0.0f, 0.0f, trunkHeight); // Mover hacia arriba para dibujar la copa
+    gluSphere(quad, crownRadius, 32, 32);
+
+    gluDeleteQuadric(quad);
     glPopMatrix();
 }
 
@@ -665,39 +1222,19 @@ void display() {
     glutSolidSphere(10, 50, 50); // Dibuja el personaje como una esfera sólida
     glPopMatrix();
 
-    // Dibujar edificios como cubos
-    for (int i = 0; i < 6; i++) {
-        glPushMatrix();
-        glTranslatef(buildingPositions[i][0], buildingPositions[i][1], buildingSize / 2); // Alinea los cubos con el suelo
-        glColor3f(0.5, 0.5, 0.5);
-        drawCube(0, 0, 0, buildingSize);
-        glPopMatrix();
-    }
-    
-   // Dibujar el edificio de Ciencias Jurídicas
-    glColor3f(0.0, 0.0, 0.5);
-    float juridicaSizeX = buildingSize * 1.5;
-    drawCube(0, -140, 0, juridicaSizeX);
-    
-    // Dibujar el edificio de Academica
-//    glColor3f(0.5, 0.0, 0.0);
-//    float academicaSizeX = buildingSize * 1.5;
-//    drawCube(-350, 100, 0, academicaSizeX);
-
-
     glDisable(GL_DEPTH_TEST);
     //Calle inicial
-    BresenhamLinea(50, -500, 50, -300);
-    BresenhamLinea(150, -500, 150, -300);
+    BresenhamLinea(50, -500, 50, -350);
+    BresenhamLinea(150, -500, 150, -350);
     //Calle horizontal izquierda
-    BresenhamLinea(50, -300, -450, -300);
-    BresenhamLinea(50, -200, -450, -200);
+    BresenhamLinea(50, -350, -450, -350);
+    BresenhamLinea(50, -250, -450, -250);
     //Calle horizontal derecha
-    BresenhamLinea(150, -300, 450, -300);
-    BresenhamLinea(150, -200, 450, -200);
+    BresenhamLinea(150, -350, 450, -350);
+    BresenhamLinea(150, -250, 450, -250);
     //Calle vertical
-    BresenhamLinea(150, -200, 150, 0);
-    BresenhamLinea(50, -200, 50, 0);
+    BresenhamLinea(150, -250, 150, 0);
+    BresenhamLinea(50, -250, 50, 0);
     //Fuente
     circunferencia(100, 100, 40);
     circunferencia(100, 100, 60);
@@ -719,10 +1256,21 @@ void display() {
     BresenhamLinea(-125, 300, 50, 300);
 
     glEnable(GL_DEPTH_TEST);
-    
+
     bunker();
     usosMultiples();
-    
+    academica(100, 150, 50);
+    dibujarMedicinaUno();
+    dibujarMedicinaDos();
+    AulasN();
+    Arriate();
+    dibujarArbol(-150, -100, 0);
+    dibujarArbol(-175, -150, 50);
+    //    dibujarArbol(-225, -150, 50);
+    //    dibujarArbol(-225, -125, 50);
+    glTranslatef(325, -290, -2.5);
+    academica(100, 100, 50);
+
     glFlush();
     glutSwapBuffers();
 }
@@ -736,18 +1284,6 @@ void keyboard(unsigned char key, int x, int y) {
         case 'a': character_x -= 10;
             break;
         case 'd': character_x += 10;
-            break;
-        case '1': fillBuildings[0] = !fillBuildings[0];
-            break;
-        case '2': fillBuildings[1] = !fillBuildings[1];
-            break;
-        case '3': fillBuildings[2] = !fillBuildings[2];
-            break;
-        case '4': fillBuildings[3] = !fillBuildings[3];
-            break;
-        case '5': fillBuildings[4] = !fillBuildings[4];
-            break;
-        case '6': fillBuildings[5] = !fillBuildings[5];
             break;
         case 27: exit(0);
             break; // Tecla Esc
