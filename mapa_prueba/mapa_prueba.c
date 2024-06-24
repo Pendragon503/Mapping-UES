@@ -12,13 +12,13 @@ int character_y = -400; // Posición inicial del personaje
 
 int buildingPositions[6][2] = {
     //Juridicas
-    {0, -140},
+    //{0, -140},
     //Aulas N
-    {0, -25},
+    //{0, -25},
     //Academica
-    {-350, 100},
+    //{-350, 100},
     //Medicina
-    {350, 350}
+    //{350, 350}
 };
 int buildingSize = 50;
 
@@ -150,6 +150,150 @@ void BresenhamLinea(int x1, int y1, int x2, int y2) {
             error += dx;
         }
     }
+}
+
+void Bresenham3D(float x0, float y0, float z0, float x1, float y1, float z1) {
+    int dx = abs(x1 - x0);
+    int dy = abs(y1 - y0);
+    int dz = abs(z1 - z0);
+    int xs = (x0 < x1) ? 1 : -1;
+    int ys = (y0 < y1) ? 1 : -1;
+    int zs = (z0 < z1) ? 1 : -1;
+
+    int x = x0;
+    int y = y0;
+    int z = z0;
+
+    if (dx >= dy && dx >= dz) {        // Driving axis is X-axis
+        int p1 = 2 * dy - dx;
+        int p2 = 2 * dz - dx;
+        while (x != x1) {
+            x += xs;
+            if (p1 >= 0) {
+                y += ys;
+                p1 -= 2 * dx;
+            }
+            if (p2 >= 0) {
+                z += zs;
+                p2 -= 2 * dx;
+            }
+            p1 += 2 * dy;
+            p2 += 2 * dz;
+            glBegin(GL_POINTS);
+            glVertex3f(x, y, z);
+            glEnd();
+        }
+    } else if (dy >= dx && dy >= dz) { // Driving axis is Y-axis
+        int p1 = 2 * dx - dy;
+        int p2 = 2 * dz - dy;
+        while (y != y1) {
+            y += ys;
+            if (p1 >= 0) {
+                x += xs;
+                p1 -= 2 * dy;
+            }
+            if (p2 >= 0) {
+                z += zs;
+                p2 -= 2 * dy;
+            }
+            p1 += 2 * dx;
+            p2 += 2 * dz;
+            glBegin(GL_POINTS);
+            glVertex3f(x, y, z);
+            glEnd();
+        }
+    } else {                           // Driving axis is Z-axis
+        int p1 = 2 * dy - dz;
+        int p2 = 2 * dx - dz;
+        while (z != z1) {
+            z += zs;
+            if (p1 >= 0) {
+                y += ys;
+                p1 -= 2 * dz;
+            }
+            if (p2 >= 0) {
+                x += xs;
+                p2 -= 2 * dz;
+            }
+            p1 += 2 * dy;
+            p2 += 2 * dx;
+            glBegin(GL_POINTS);
+            glVertex3f(x, y, z);
+            glEnd();
+        }
+    }
+}
+
+void drawWindowsPoints(float startX, float startY, float startZ, float buildingSize) {
+    // Color de las ventanas
+    glColor3f(1.0f, 1.0f, 1.0f); // Color blanco para las ventanas
+
+    // Dibujar las ventanas como puntos (ajustar según sea necesario)
+    glPointSize(3.0f); // Tamaño de los puntos (ajustar según sea necesario)
+
+    // Calcular la posición de las ventanas
+    float windowWidth = buildingSize / 4.0f;
+    float windowHeight = buildingSize / 4.0f;
+    float windowDepth = buildingSize / 4.0f;
+
+    // Dibujar ventanas en las caras del edificio
+    glBegin(GL_POINTS);
+    // Cara frontal
+    glVertex3f(startX - windowWidth, startY - windowHeight, startZ + windowDepth);
+    glVertex3f(startX + windowWidth, startY - windowHeight, startZ + windowDepth);
+    glVertex3f(startX - windowWidth, startY + windowHeight, startZ + windowDepth);
+    glVertex3f(startX + windowWidth, startY + windowHeight, startZ + windowDepth);
+
+    // Cara posterior
+    glVertex3f(startX - windowWidth, startY - windowHeight, startZ - windowDepth);
+    glVertex3f(startX + windowWidth, startY - windowHeight, startZ - windowDepth);
+    glVertex3f(startX - windowWidth, startY + windowHeight, startZ - windowDepth);
+    glVertex3f(startX + windowWidth, startY + windowHeight, startZ - windowDepth);
+
+    // Cara izquierda
+    glVertex3f(startX - windowWidth, startY - windowHeight, startZ + windowDepth);
+    glVertex3f(startX - windowWidth, startY - windowHeight, startZ - windowDepth);
+    glVertex3f(startX - windowWidth, startY + windowHeight, startZ + windowDepth);
+    glVertex3f(startX - windowWidth, startY + windowHeight, startZ - windowDepth);
+
+    // Cara derecha
+    glVertex3f(startX + windowWidth, startY - windowHeight, startZ + windowDepth);
+    glVertex3f(startX + windowWidth, startY - windowHeight, startZ - windowDepth);
+    glVertex3f(startX + windowWidth, startY + windowHeight, startZ + windowDepth);
+    glVertex3f(startX + windowWidth, startY + windowHeight, startZ - windowDepth);
+
+    glEnd();
+}
+
+
+void drawCube2(float x, float y, float z, float size) {
+    float halfSize = size / 2.0f;
+    float vertices[8][3] = {
+        {x - halfSize, y - halfSize, z - halfSize},
+        {x + halfSize, y - halfSize, z - halfSize},
+        {x + halfSize, y + halfSize, z - halfSize},
+        {x - halfSize, y + halfSize, z - halfSize},
+        {x - halfSize, y - halfSize, z + halfSize},
+        {x + halfSize, y - halfSize, z + halfSize},
+        {x + halfSize, y + halfSize, z + halfSize},
+        {x - halfSize, y + halfSize, z + halfSize}
+    };
+
+    // Dibujar las 12 aristas del cubo usando Bresenham3D
+    Bresenham3D(vertices[0][0], vertices[0][1], vertices[0][2], vertices[1][0], vertices[1][1], vertices[1][2]);
+    Bresenham3D(vertices[1][0], vertices[1][1], vertices[1][2], vertices[2][0], vertices[2][1], vertices[2][2]);
+    Bresenham3D(vertices[2][0], vertices[2][1], vertices[2][2], vertices[3][0], vertices[3][1], vertices[3][2]);
+    Bresenham3D(vertices[3][0], vertices[3][1], vertices[3][2], vertices[0][0], vertices[0][1], vertices[0][2]);
+
+    Bresenham3D(vertices[4][0], vertices[4][1], vertices[4][2], vertices[5][0], vertices[5][1], vertices[5][2]);
+    Bresenham3D(vertices[5][0], vertices[5][1], vertices[5][2], vertices[6][0], vertices[6][1], vertices[6][2]);
+    Bresenham3D(vertices[6][0], vertices[6][1], vertices[6][2], vertices[7][0], vertices[7][1], vertices[7][2]);
+    Bresenham3D(vertices[7][0], vertices[7][1], vertices[7][2], vertices[4][0], vertices[4][1], vertices[4][2]);
+
+    Bresenham3D(vertices[0][0], vertices[0][1], vertices[0][2], vertices[4][0], vertices[4][1], vertices[4][2]);
+    Bresenham3D(vertices[1][0], vertices[1][1], vertices[1][2], vertices[5][0], vertices[5][1], vertices[5][2]);
+    Bresenham3D(vertices[2][0], vertices[2][1], vertices[2][2], vertices[6][0], vertices[6][1], vertices[6][2]);
+    Bresenham3D(vertices[3][0], vertices[3][1], vertices[3][2], vertices[7][0], vertices[7][1], vertices[7][2]);
 }
 
 void puntear(int x, int y) {
@@ -529,6 +673,17 @@ void display() {
         drawCube(0, 0, 0, buildingSize);
         glPopMatrix();
     }
+    
+   // Dibujar el edificio de Ciencias Jurídicas
+    glColor3f(0.0, 0.0, 0.5);
+    float juridicaSizeX = buildingSize * 1.5;
+    drawCube(0, -140, 0, juridicaSizeX);
+    
+    // Dibujar el edificio de Academica
+//    glColor3f(0.5, 0.0, 0.0);
+//    float academicaSizeX = buildingSize * 1.5;
+//    drawCube(-350, 100, 0, academicaSizeX);
+
 
     glDisable(GL_DEPTH_TEST);
     //Calle inicial
@@ -567,7 +722,7 @@ void display() {
     
     bunker();
     usosMultiples();
-
+    
     glFlush();
     glutSwapBuffers();
 }
