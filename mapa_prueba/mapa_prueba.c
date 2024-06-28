@@ -8,7 +8,7 @@
 #define VIEWPORT_HEIGHT 600
 
 int character_x = 100; // Posición inicial del personaje
-int character_y = 100; // Posición inicial del personaje
+int character_y = -400; // Posición inicial del personaje
 
 int buildingPositions[6][2] = {
     //Juridicas
@@ -1205,7 +1205,7 @@ void display() {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(100.0, (double) VIEWPORT_WIDTH / (double) VIEWPORT_HEIGHT, 1.0, 1000.0);
+    gluPerspective(55.0, (double) VIEWPORT_WIDTH / (double) VIEWPORT_HEIGHT, 1.0, 1000.0);
     glMatrixMode(GL_MODELVIEW);
 
     glLoadIdentity();
@@ -1274,8 +1274,8 @@ void display() {
     dibujarArbol(-175, -150, 50);
     dibujarArbol(350, -50, 50);
     dibujarArbol(100, 80, 50);
-    //    dibujarArbol(-225, -150, 50);
-    //    dibujarArbol(-225, -125, 50);
+    dibujarArbol(-225, -160, 50);
+    dibujarArbol(-225, -115, 50);
     glTranslatef(325, -290, -2.5);
     academica(100, 100, 50);
 
